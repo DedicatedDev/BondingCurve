@@ -9,13 +9,11 @@ import { ThemeSettingsProvider } from "./providers/ThemeSettingsProvider";
 
 ReactDOM.render(
   <React.StrictMode>
-    <SnackbarProvider>
-      <AppContextProvider>
-        <ThemeSettingsProvider>
-          <App />
-        </ThemeSettingsProvider>
-      </AppContextProvider>
-    </SnackbarProvider>
+    <AppContextProvider>
+      <ThemeSettingsProvider>
+        <App />
+      </ThemeSettingsProvider>
+    </AppContextProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

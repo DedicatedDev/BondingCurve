@@ -1,17 +1,14 @@
 {
-  "name": "@cryptocelts/monorepo",
+  "name": "@swarm/monorepo",
   "version": "0.0.1",
-  "description": "CryptoCelt is just CeltNFT/GreenFalCoin Creat/Airdrop/Marketing Page",
-  "author": "Andrei K",
+  "description": "testing",
   "license": "MIT",
   "private": true,
-  "workspaces":{
+  "workspaces": {
     "packages": [
       "packages/contracts-typechain",
       "packages/blockchain",
-      "packages/app",
-      "packages/nft-res-generator",
-      "packages/server"
+      "packages/app"
     ]
   },
   "packageManager": "yarn@3.1.0",
@@ -21,31 +18,27 @@
   "engines": {
     "node": ">=16"
   },
-  "scripts":{
+  "scripts": {
     "lint": "eslintg .",
     "lint-fix": "eslint --fix .",
     "postinstall": "yarn hh:build && yarn typechain:build",
-    "poetry" : "cd packages/nft-res-generator/src/generator && poetry install",
-    "nft:convert-layers-csv":"cd packages/nft-res-generator/src/generator && deno run --import-map ./import_map.json -A Drakefile.ts convert-layers-csv layersCsvPath=input-rarity-table.csv outputJsonPath=assets/layers.json",
-    "nft:generate-metadata" :"cd packages/nft-res-generator/src/generator && rm -rf build && deno run --import-map ./import_map.json -A Drakefile.ts generate-metadata",
-    "nft:generate-car": "cd packages/nft-res-generator && yarn ipfs-car --pack ./generator/build/images --output ./generator/build/image.car && yarn ipfs-car --pack ./generator/build/metadata --output ./generator/build/metadata.car",
-    "nft:prepare":"cd packages/nft-res-generator && yarn node index.js",
     "typechain:build": "cd packages/contracts-typechain && yarn build",
-    "hh:node":"cd packages/blockchain && npx hardhat node",
-    "hh:build":"cd packages/blockchain && npx hardhat compile --force && cd .. && yarn typechain:build",
-    "hh:test" : "cd packages/blockchain && npx hardhat test",
-    "hh:deploy:local" : "cd packages/blockchain && npx hardhat run --network localhost scripts/deploy.ts && cd .. && yarn typechain:build",
-    "hh:deploy:rinkeby" : "cd packages/blockchain && npx hardhat run --network rinkeby scripts/deploy.ts && cd .. && yarn typechain:build",
+    "hh:node": "cd packages/blockchain && npx hardhat node",
+    "hh:clean": "cd packages/blockchain && npx hardhat clean",
+    "hh:build": "cd packages/blockchain && npx hardhat compile --force && cd .. && yarn typechain:build",
+    "hh:test": "cd packages/blockchain && npx hardhat test",
+    "hh:deploy:local": "cd packages/blockchain && npx hardhat run --network localhost scripts/deploy.ts && cd .. && yarn typechain:build",
+    "hh:deploy:rinkeby": "cd packages/blockchain && npx hardhat run --network rinkeby scripts/deploy.ts && cd .. && yarn typechain:build",
     "hh:deploy:emerald_testnet": "cd packages/hardhat && npx hardhat run --network emerald_testnet scripts/deploy.ts && cd .. && yarn typechain:build",
     "hh:deploy:emerald_mainnet": "cd packages/hardhat && npx hardhat run --network emerald_mainnet scripts/deploy.ts && cd .. && yarn typechain:build",
-    "crypto-celts" : "cd packages/app && yarn start",
-    "crypto-celts:build" : "cd packages/app && yarn build"
+    "curve": "cd packages/app && yarn start",
+    "curve:build": "cd packages/app && yarn build"
   },
   "dependencies": {
     "axios": "^0.26.0",
     "crypto-js": "^4.1.1",
     "web3modal": "^1.9.5",
-    "ethers-eip712":"^0.2.0"
+    "ethers-eip712": "^0.2.0"
   },
   "devDependencies": {
     "@typechain/ethers-v5": "^9.0.0",
@@ -74,7 +67,6 @@
     "ethers": "^5.6.0",
     "jest": "^27.0.4",
     "mocha": "^9.2.2",
-    "openapi-examples-validator": "^4.6.0",
     "prettier": "^2.4.1",
     "ts-jest": "^27.0.2",
     "ts-node": "^10.5.0",

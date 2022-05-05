@@ -1,4 +1,4 @@
-import { Box, styled, Typography, Slide, keyframes } from "@mui/material";
+import { Box, styled, Typography, Slide, keyframes, TextField, Button } from "@mui/material";
 import HeroLogoImg from "../../assets/image/home/heroLogo.png";
 import BgImag from "../../assets/image/home/background.svg";
 import BgImagTm from "../../assets/image/home/background_tm.svg";
@@ -6,176 +6,182 @@ import Arrow from "../../assets/image/home/arrow.svg";
 import { LocalizedTexts } from "../../assets/localization/localization";
 import { useTranslation } from "react-i18next";
 
-import { FeatureContent } from "./parts/FeatureContent";
-import { Celts } from "./parts/Celts";
-import { FAQ } from "./parts/FAQ";
-import { Footer } from "./parts/Footer";
 import { useBreakPoint } from "../../utils/MediaQuery";
 import { useEffect, useRef, useState } from "react";
+import Web3Modal from "web3modal";
+import { BigNumber, ethers } from "ethers";
+import { CurveABI, Settings, BondingCurve, DaiABI, MockDAI, BzzABI, Bzz } from "@swarm/contracts-typechain";
+import { InputFieldType } from "../../interfaces/home/InputType";
+import { BzzWeb3Service } from "../../services/Web3Service";
+import { CurveBoard } from "../../components/CurveBoard";
+import { Utils } from "../../utils/Utils";
 
 export const Home = () => {
-  const HomeContainer = styled("div")(({ theme }) => ({
-    backgroundColor: theme.palette.background.default,
-    width: "100%",
-  }));
-
-  const TopSection = styled("div")(({ theme }) => ({
-    backgroundColor: theme.palette.background.default,
-    width: "100%",
-    height: `${match ? "100vh" : "auto"}`,
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "cover",
-    backgroundImage: `url(${match ? BgImag : null})`,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    zIndex: 10,
-  }));
-
-  const HeroLogoContainer = styled(Box)(({ theme }) => ({
-    color: theme.palette.background.default,
-    width: "100%",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignContent: "start",
-    margin: `${match ? "0 0 10vh 0" : null}`,
-    padding: `${match ? "0 10vh 0 10vh" : "3vh 5vw 0 5vw"}`,
-  }));
-
-  const HeroLogo = styled("img")(({ theme }) => ({
-    width: "100%",
-    maxWidth: "600px",
-  }));
-
-  const HeroLogoDes = styled(Typography)(({ theme }) => ({
-    maxWidth: "550px",
-    marginTop: "10px",
-    marginBottom: "25px",
-    color: theme.palette.secondary.main,
-  }));
-
-  const GapSection = styled(Box)(({ theme }) => ({
-    backgroundColor: theme.palette.primary.dark,
-    padding: "10vh 0 5vh 0",
-    zIndex: -100,
-  }));
-
-  const MiddleSection = styled(Box)(({ theme }) => ({
-    backgroundColor: theme.palette.primary.dark,
-    width: "100vw",
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-  }));
-
-  const FeatureContainer = styled(Box)(({ theme }) => ({
-    width: "90vw",
-    padding: `${match ? "0 10vw 0 10vw" : null}`,
-    margin: `${match ? "10vh 0px 10vh 0px" : "5vh 0vw 5vh 0vw"}`,
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: `${match ? null : "wrap"}`,
-    justifyContent: "space-around",
-    alignItems: "center",
-  }));
-
-  const FAQSection = styled(Box)(({ theme }) => ({
-    padding: "10vh 10vw 10vh 10 vw",
-    display: "flex",
-    flexDirection: "row",
-  }));
-
-  const FootSection = styled(Box)(({ theme }) => ({
-    backgroundColor: theme.palette.secondary.main,
-    padding: "10vh 10vw 10vh 10 vw",
-    display: "flex",
-    flexDirection: "row",
-  }));
-
-  const ArrowSection = styled("img")(({ theme }) => ({
-    position: "absolute",
-    top: "auto",
-    bottom: "5px",
-    left: 0,
-    right: 0,
-    margin: "auto",
-    animation: `${up_down} 1s linear infinite`,
-  }));
-
-  const up_down = keyframes`
-   0%, 100% {
-    bottom: 0;
-  }
-  50% {
-    bottom: 30px;
-  }
-`;
-
-  const { t } = useTranslation();
   const match = useBreakPoint();
   const [show, setShow] = useState(false);
-  const containerRef = useRef(null);
-
+  const [graphData, setGraphData] = useState<any[]>([]);
+  const web3Service = new BzzWeb3Service();
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShow(true);
-    }, 1000);
-    return () => clearTimeout(timer);
+    const init = async () => {
+      await web3Service.connectWallet();
+      const _totalBzzSupply = await web3Service.getBZZTotalSupply();
+      updateFormInput((pre) => ({ ...pre, totalBzzSupply: _totalBzzSupply.toString() }));
+    };
+    init();
   }, []);
 
+  const calc = async () => {
+    await web3Service.connectWallet();
+    const outputBzz = await web3Service.getBzz(BigNumber.from(formInput.daiSupply));
+    const outputDAI = await web3Service.redeemBZZ(BigNumber.from(formInput.redeemBZZ));
+    console.log(outputBzz, outputDAI);
+    updateFormInput((pre) => ({ ...pre, outputBZZ: +outputBzz.toString(), outputDAI: +outputDAI.toString() }));
+
+    let data = [];
+    for (let dai = 10; dai < 8000; dai += 1000) {
+      const outputBzz = await web3Service.getBzz(BigNumber.from(dai));
+      const outputDAI = await web3Service.redeemBZZ(BigNumber.from(dai));
+      const chat_data = {
+        name: `${dai.toString()}`,
+        bzz: outputBzz.toNumber(),
+        dai: outputDAI.toNumber(),
+      };
+      data.push(chat_data);
+    }
+    setGraphData(data);
+    console.log(data);
+  };
+
+  const burnToken = async () => {
+    try {
+      await web3Service.connectWallet();
+      await web3Service.burnBZZToken(ethers.utils.parseEther(formInput.bzzAmountForBurn.toString()));
+      const _totalBzzSupply = await web3Service.getBZZTotalSupply();
+      updateFormInput((pre) => ({ ...pre, totalBzzSupply: _totalBzzSupply.toString() }));
+    } catch (error) {
+      Utils.handlingError(error);
+    }
+  };
+
+  const [formInput, updateFormInput] = useState({
+    daiSupply: 0,
+    redeemBZZ: 0,
+    outputBZZ: 0,
+    outputDAI: 0,
+    bzzAmountForBurn: 0,
+    totalBzzSupply: "0",
+  });
+  const handleChange = (type: InputFieldType, event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    let inputValue: number = Number(event.target.value);
+    if (!inputValue) {
+      inputValue = 0;
+    }
+    switch (type) {
+      case InputFieldType.BZZ:
+        updateFormInput((pre) => ({ ...pre, redeemBZZ: inputValue }));
+        break;
+      case InputFieldType.BurnBZZ:
+        updateFormInput((pre) => ({ ...pre, bzzAmountForBurn: inputValue }));
+        break;
+
+      default:
+        updateFormInput((pre) => ({ ...pre, daiSupply: inputValue }));
+        break;
+    }
+  };
+
+  const CalcBtn = styled(Button)(({ theme }) => ({
+    height: "52px",
+    borderRadius: "2px",
+    padding: "16px 24px 16px 24px",
+    backgroundColor: theme.palette.primary.dark,
+    color: "white",
+    margin: "24px",
+    "&:hover": {
+      color: "red",
+    },
+  }));
+
   return (
-    <HomeContainer>
-      <ArrowSection src={Arrow}></ArrowSection>
-      <TopSection>
-        <HeroLogoContainer
-          padding={{
-            xl: "0px 10vh 10vh 10vw",
-            lg: "3vh 5vw 0px 5vw",
-            md: "3vh 5vw 5vh 5vw",
-            sm: "3vh 5vw 5vh 5vw",
-          }}
-        >
-          <Slide
-            in={show}
-            direction="up"
-            timeout={2000}
-            easing={{
-              enter: "cubic-bezier(0, 1.5, .8, 1)",
-              exit: "linear",
-            }}
-          >
-            <HeroLogo src={HeroLogoImg}></HeroLogo>
-          </Slide>
-          <Slide
-            in={show}
-            direction="up"
-            timeout={2000}
-            easing={{
-              enter: "cubic-bezier(0, 1.5, .8, 1)",
-              exit: "linear",
-            }}
-          >
-            <HeroLogoDes color="CaptionText" variant="h3">
-              {t(LocalizedTexts.hero_logo_des)}
-            </HeroLogoDes>
-          </Slide>
-        </HeroLogoContainer>
-        {match ? null : <img src={BgImagTm} />}
-      </TopSection>
-      <GapSection />
-      <MiddleSection>
-        <FeatureContainer>
-          <FeatureContent></FeatureContent>
-          <Celts></Celts>
-        </FeatureContainer>
-      </MiddleSection>
-      <FAQSection>
-        <FAQ></FAQ>
-      </FAQSection>
-      <FootSection>
-        <Footer></Footer>
-      </FootSection>
-    </HomeContainer>
+    <Box display="flex" flexDirection="column" justifyContent="center" p={3}>
+      <Box
+        sx={{
+          border: "solid 1px",
+          borderColor: (theme) => theme.palette.primary.dark,
+          borderRadius: "8px",
+          display: "flex",
+          flexDirection: !match ? "column" : "row",
+        }}
+        p={3}
+        justifyContent="space-around"
+        alignItems="center"
+      >
+        <Box>
+          <Box display="flex" flexDirection="row" justifyContent="flex-start" alignItems="center">
+            <TextField
+              id="home-deposit"
+              label="Deposit DAI"
+              inputProps={{ min: "0" }}
+              value={formInput.daiSupply}
+              sx={{
+                input: { color: "black" },
+              }}
+              onChange={(e) => handleChange(InputFieldType.DAI, e)}
+            ></TextField>
+            <Typography id="home-output" p={3} color="green">
+              OutPut BZZ
+            </Typography>
+            <Typography id="home-output" color="red">
+              {formInput.outputBZZ.toString()}
+            </Typography>
+          </Box>
+          <Box display="flex" flexDirection="row" justifyContent="flex-start" alignItems="center" mt={2}>
+            <TextField
+              id="home-token-supply"
+              label="Redeem BZZ"
+              inputProps={{ min: "0" }}
+              value={formInput.redeemBZZ}
+              sx={{
+                input: { color: "black" },
+              }}
+              onChange={(e) => handleChange(InputFieldType.BZZ, e)}
+            ></TextField>
+            <Typography id="home-output" p={3} color="green">
+              OutPut DAI
+            </Typography>
+            <Typography id="home-output" color="red">
+              {formInput.outputDAI.toString()}
+            </Typography>
+          </Box>
+          <Box display="flex" flexDirection="row" justifyContent="flex-start" alignItems="center" mt={2}>
+            <TextField
+              id="home-burn-supply"
+              label="Burn Bzz"
+              inputProps={{ min: "0" }}
+              value={formInput.bzzAmountForBurn}
+              sx={{
+                input: { color: "black" },
+              }}
+              onChange={(e) => handleChange(InputFieldType.BurnBZZ, e)}
+            ></TextField>
+            <Typography color="black" ml={2}>Unit(ETH)</Typography>
+            <CalcBtn onClick={burnToken}>Burn</CalcBtn>
+          </Box>
+          <Box display="flex" flexDirection="row" justifyContent="flex-start" alignItems="center" mt={2}>
+            <Typography color="green">Total Bzz Supply</Typography>
+            <Typography color="red" ml={14}>
+              {formInput.totalBzzSupply}
+            </Typography>
+          </Box>
+        </Box>
+        <Box m={5}>
+          <CurveBoard graphData={graphData}></CurveBoard>
+        </Box>
+      </Box>
+
+      <Box mt={5} display="flex" flexDirection="column" justifyContent="center">
+        <CalcBtn onClick={calc}>Prediction</CalcBtn>
+      </Box>
+    </Box>
   );
 };

@@ -13,159 +13,87 @@ import * as Contracts from ".";
 declare module "hardhat/types/runtime" {
   interface HardhatEthersHelpers extends HardhatEthersHelpersBase {
     getContractFactory(
-      name: "OwnableUpgradeable",
+      name: "Ownable",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.OwnableUpgradeable__factory>;
+    ): Promise<Contracts.Ownable__factory>;
     getContractFactory(
-      name: "IERC1822ProxiableUpgradeable",
+      name: "ERC20",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IERC1822ProxiableUpgradeable__factory>;
+    ): Promise<Contracts.ERC20__factory>;
     getContractFactory(
-      name: "IBeaconUpgradeable",
+      name: "IERC20Metadata",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IBeaconUpgradeable__factory>;
+    ): Promise<Contracts.IERC20Metadata__factory>;
     getContractFactory(
-      name: "ERC1967UpgradeUpgradeable",
+      name: "IERC20",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ERC1967UpgradeUpgradeable__factory>;
+    ): Promise<Contracts.IERC20__factory>;
     getContractFactory(
-      name: "UUPSUpgradeable",
+      name: "BondingCurve",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.UUPSUpgradeable__factory>;
+    ): Promise<Contracts.BondingCurve__factory>;
     getContractFactory(
-      name: "PausableUpgradeable",
+      name: "Bzz",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.PausableUpgradeable__factory>;
+    ): Promise<Contracts.Bzz__factory>;
     getContractFactory(
-      name: "ERC1155Upgradeable",
+      name: "IBZZ",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ERC1155Upgradeable__factory>;
+    ): Promise<Contracts.IBZZ__factory>;
     getContractFactory(
-      name: "IERC1155MetadataURIUpgradeable",
+      name: "ICurve",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IERC1155MetadataURIUpgradeable__factory>;
+    ): Promise<Contracts.ICurve__factory>;
     getContractFactory(
-      name: "IERC1155ReceiverUpgradeable",
+      name: "MockDAI",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IERC1155ReceiverUpgradeable__factory>;
-    getContractFactory(
-      name: "IERC1155Upgradeable",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IERC1155Upgradeable__factory>;
-    getContractFactory(
-      name: "ERC20Upgradeable",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ERC20Upgradeable__factory>;
-    getContractFactory(
-      name: "IERC20MetadataUpgradeable",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IERC20MetadataUpgradeable__factory>;
-    getContractFactory(
-      name: "IERC20Upgradeable",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IERC20Upgradeable__factory>;
-    getContractFactory(
-      name: "ERC165Upgradeable",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ERC165Upgradeable__factory>;
-    getContractFactory(
-      name: "IERC165Upgradeable",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IERC165Upgradeable__factory>;
-    getContractFactory(
-      name: "CeltMinter",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.CeltMinter__factory>;
-    getContractFactory(
-      name: "GreenFalcoin",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.GreenFalcoin__factory>;
+    ): Promise<Contracts.MockDAI__factory>;
 
     getContractAt(
-      name: "OwnableUpgradeable",
+      name: "Ownable",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.OwnableUpgradeable>;
+    ): Promise<Contracts.Ownable>;
     getContractAt(
-      name: "IERC1822ProxiableUpgradeable",
+      name: "ERC20",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.IERC1822ProxiableUpgradeable>;
+    ): Promise<Contracts.ERC20>;
     getContractAt(
-      name: "IBeaconUpgradeable",
+      name: "IERC20Metadata",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.IBeaconUpgradeable>;
+    ): Promise<Contracts.IERC20Metadata>;
     getContractAt(
-      name: "ERC1967UpgradeUpgradeable",
+      name: "IERC20",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.ERC1967UpgradeUpgradeable>;
+    ): Promise<Contracts.IERC20>;
     getContractAt(
-      name: "UUPSUpgradeable",
+      name: "BondingCurve",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.UUPSUpgradeable>;
+    ): Promise<Contracts.BondingCurve>;
     getContractAt(
-      name: "PausableUpgradeable",
+      name: "Bzz",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.PausableUpgradeable>;
+    ): Promise<Contracts.Bzz>;
     getContractAt(
-      name: "ERC1155Upgradeable",
+      name: "IBZZ",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.ERC1155Upgradeable>;
+    ): Promise<Contracts.IBZZ>;
     getContractAt(
-      name: "IERC1155MetadataURIUpgradeable",
+      name: "ICurve",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.IERC1155MetadataURIUpgradeable>;
+    ): Promise<Contracts.ICurve>;
     getContractAt(
-      name: "IERC1155ReceiverUpgradeable",
+      name: "MockDAI",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.IERC1155ReceiverUpgradeable>;
-    getContractAt(
-      name: "IERC1155Upgradeable",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IERC1155Upgradeable>;
-    getContractAt(
-      name: "ERC20Upgradeable",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.ERC20Upgradeable>;
-    getContractAt(
-      name: "IERC20MetadataUpgradeable",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IERC20MetadataUpgradeable>;
-    getContractAt(
-      name: "IERC20Upgradeable",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IERC20Upgradeable>;
-    getContractAt(
-      name: "ERC165Upgradeable",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.ERC165Upgradeable>;
-    getContractAt(
-      name: "IERC165Upgradeable",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IERC165Upgradeable>;
-    getContractAt(
-      name: "CeltMinter",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.CeltMinter>;
-    getContractAt(
-      name: "GreenFalcoin",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.GreenFalcoin>;
+    ): Promise<Contracts.MockDAI>;
 
     // default types
     getContractFactory(

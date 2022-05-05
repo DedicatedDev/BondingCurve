@@ -1,5 +1,5 @@
 {
-  "name": "@cryptocelts/contracts-typechain",
+  "name": "@swarm/contracts-typechain",
   "version": "1.0.0",
   "main": "lib/index.js",
   "author": "Andrei K",

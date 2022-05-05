@@ -1,23 +1,11 @@
-import { appendFileSync, existsSync, mkdirSync, writeFileSync, readFileSync } from "fs";
+import { appendFileSync, existsSync, mkdirSync, writeFileSync} from "fs";
 
-export const saveDeployedAddress = async (celtMinter: string, greenFalcoin: string) => {
-  appendFileSync("./.env", `\nAPP_ADDRESS=${celtMinter} ${greenFalcoin}`);
-  const settingInfo = {
-    tokenUri: "",
-    celtMinterAddress: "",
-    greenFalcoinAddress: "",
-  };
-  settingInfo.celtMinterAddress = celtMinter;
-  settingInfo.greenFalcoinAddress = greenFalcoin;
+export const saveDeployedAddress = async (obj:Object) => {
 
   const settingsPath = "../contracts-typechain/settings";
   if (!existsSync(settingsPath)) {
      mkdirSync(settingsPath,{recursive: true});
-  } else {
-    const rawData = readFileSync(`${settingsPath}/settings.json`);
-    const data = JSON.parse(rawData.toString());
-    settingInfo.tokenUri = data.tokenUri;
-  }
-  const json = JSON.stringify(settingInfo);
+  } 
+  const json = JSON.stringify(obj);
   writeFileSync(`${settingsPath}/settings.json`, json, "utf-8");
 };

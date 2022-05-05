@@ -1,8 +1,9 @@
 {
-  "name": "celt-airdrop",
+  "name": "swarm",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "recharts": "^2.1.9",
     "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11.8.1",
     "@mui/icons-material": "^5.5.0",
@@ -15,7 +16,7 @@
     "@types/node": "^16.7.13",
     "@types/react": "^17.0.20",
     "@types/react-dom": "^17.0.9",
-    "@types/lodash":"4.14.181",
+    "@types/lodash": "4.14.181",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "5.0.0",
@@ -28,16 +29,16 @@
     "axios": "^0.26.1",
     "chai": "^4.3.6",
     "react-localization": "^1.0.19",
-    "i18next-fetch-backend" : "^4.1.1",
+    "i18next-fetch-backend": "^4.1.1",
     "i18next-browser-languagedetector": "^6.1.4",
     "i18next": "^21.6.16",
     "react-i18next": "^11.16.6",
-    "react-iframe" : "^1.8.0"
+    "react-iframe": "^1.8.0"
   },
   "peerDependencies": {
-    "@cryptocelts/contracts-typechain": "*",
+    "@swarm/contracts-typechain": "*",
     "@typechain/ethers-v5": "*",
-    "web3modal":"*"
+    "web3modal": "*"
   },
   "scripts": {
     "start": "react-scripts start",
